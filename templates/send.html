@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet"/>
+
+</head>
+<body>
+    <a href="/">Скупщик</a>
+    <a href="/wallet">Кошелек</a>
+    <a href="/send">Отправить монетки</a>
+    <a href="/top">Рейтинг</a>
+    <h1 class="display-3">Отправь свои монетки</h1>
+    <form method="POST" action="/send">
+         <textarea placeholder="Ваш id" name="ids_from" cols="80" rows="1"></textarea>
+        <textarea placeholder="кол-во монеток" name="count" cols="8" rows="1"></textarea>
+        <textarea placeholder="id получателя" name="ids_to" cols="80" rows="1"></textarea>
+         <button type="submit">Отправить</button>
+        {% if res == 1 %}
+            <p class="display-3">Вы великолепны!</p>
+        {% endif %}
+
+        {% if res == 0 %}
+            <p class="display-3">Мне кажется, вы хотите меня обмануть!</p>
+        {% endif %}
+    </form>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet"/>
+
+</head>
+<body>
+    <a href="/">Скупщик</a>
+    <a href="/wallet">Кошелек</a>
+    <a href="/send">Отправить монетки</a>
+    <a href="/top">Рейтинг</a>
+    <h1 class="display-3">Проверь свои монетки</h1>
+    <form method="POST" action="/wallet">
+         <textarea placeholder="Ваш id" name="ids" cols="80" rows="1"></textarea>
+         <button type="submit">Отправить</button>
+        <h1 class="display-3">Количество монет: {{ res }}</h1>
+    </form>
+</body>
+</html>
