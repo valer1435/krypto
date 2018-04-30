@@ -98,6 +98,6 @@ def get_name(id):
             print(resp_json[0])
             return resp_json[0]["first_name"]+" "+resp_json[0]["last_name"]
         else:
-            return
+            return None
     except:
         return

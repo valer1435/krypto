@@ -9,7 +9,7 @@ import db
 def check_hash(h):
     if "-" in h:
         user = h.split("-", maxsplit=1)[0]
-        if db.is_new_string(h) and md5(h.encode('utf8')).hexdigest()[:4] == "0000":  # нашли хеш (здесь проверка для 4-х нулей)
+        if db.is_new_string(h) and md5(h.encode('utf8')).hexdigest()[:5] == "00000":  # нашли хеш (здесь проверка для 4-х нулей)
             if not user.isdigit():
                 return (False, None)
         else:
@@ -38,7 +38,7 @@ def index():
     return render_template('index.html', res=res)
 
 
-@app.route('/wallet', methods=['GET'])
+@app.route('/wallet')
 def wallet():
     user = request.args.get("ids", "")
     name, res = db.sumbit_coins(user)
@@ -53,15 +53,20 @@ def send():
         user_from = request.form["ids_from"].strip()
         user_to = request.form["ids_to"].strip()
         count = request.form["count"].strip()
-        print(db.sumbit_coins(user_from), count)
+        print( db.get_name(user_from))
         try:
-            if not db.get_name(user_from)[1] or not db.get_name(user_to)[1] or user_to == user_from   or not (db.sumbit_coins(user_from)[1] >= int(count) and int(count) > 0):
+            if not db.get_name(user_from) or not db.get_name(user_to):
                 res = 0
+            elif user_to == user_from:
+                res = -1
+            elif not db.sumbit_coins(user_from)[1] >= int(count) and int(count) > 0:
+                res = -2
             else:
                 res = 1
-        except:
-            res = 0
-        if res:
+        except Exception as e:
+            print(e)
+            res = -3
+        if res == 1:
             for i in range(int(count)):
                 db.add_transaction(user_from, user_to)
         tr = {"from": db.get_name(user_from), "to": db.get_name(user_to), "count": count, "time": str(datetime.utcnow())}
@@ -69,7 +74,7 @@ def send():
     return render_template('send.html', res=res, tr = tr)
 
 
-@app.route('/top', methods=['GET'])
+@app.route('/top')
 def top():
     res = db.group_money()
     return render_template('top.html', res=res)
