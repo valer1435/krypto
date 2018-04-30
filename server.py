@@ -47,7 +47,7 @@ def wallet():
 
 @app.route('/send', methods=['GET', 'POST'])
 def send():
-    res = 2
+    res = " "
     tr = ""
     if request.method == "POST":
         user_from = request.form["ids_from"].strip()
@@ -56,20 +56,21 @@ def send():
         print( db.get_name(user_from))
         try:
             if not db.get_name(user_from) or not db.get_name(user_to):
-                res = 0
+                res = "Такого пользователя нет"
             elif user_to == user_from:
-                res = -1
+                res = "Вы пытаетесь перевести деньги самому себе"
             elif not db.sumbit_coins(user_from)[1] >= int(count) and int(count) > 0:
-                res = -2
+                res = "Недостаточно монет"
             else:
-                res = 1
+                res = 0
+                for i in range(int(count)):
+                    db.add_transaction(user_from, user_to)
+                tr = {"from": db.get_name(user_from), "to": db.get_name(user_to), "count": count,
+                  "time": str(datetime.utcnow())}
         except Exception as e:
             print(e)
-            res = -3
-        if res == 1:
-            for i in range(int(count)):
-                db.add_transaction(user_from, user_to)
-        tr = {"from": db.get_name(user_from), "to": db.get_name(user_to), "count": count, "time": str(datetime.utcnow())}
+            res = "Укажите кол-во монет"
+
 
     return render_template('send.html', res=res, tr = tr)
 

@@ -39,22 +39,14 @@
         <div class="container">
          <button type="submit" class="btn btn-light">Отправить</button>
         </div>
-        {% if res == 1 %}
+        {% if res == 0 %}
             <p>{{tr["from"]}} перевел {{tr["to"]}} {{tr["count"]}} монет</p>
         {% endif %}
 
-        {% if res == 0 %}
-            <p>Такого пользователя нет</p>
+        {% if res%}
+            <p>{{res}}</p>
         {% endif %}
-        {% if res == -1 %}
-            <p>Вы пытаетесь перевести деньги самому себе</p>
-        {% endif %}
-        {% if res == -2 %}
-            <p>Недостаточно монет</p>
-        {% endif %}
-        {% if res == -3 %}
-            <p>Укажите кол-во монет</p>
-        {% endif %}
+
 
     </form>
 
